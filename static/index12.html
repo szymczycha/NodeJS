@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" name="a" id="a">
+    <input type="text" name="b" id="b">
+    <select name="operation" id="op">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="/">/</option>
+        <option value="*">*</option>
+        <option value="all">wszystkie</option>
+    </select>
+    <button id="btn">licz</button>
+    <script defer>
+        let a = document.getElementById("a").value;
+        let b = document.getElementById("a").value;
+        let operation = document.getElementById("op").value;
+        document.getElementById("btn").addEventListener("click", function(){
+            let data = new URLSearchParams();
+            data.append("a", 1);
+            data.append("b", 2);
+
+            const options = {
+            method: "POST",
+            body: data
+            };
+
+            fetch("/obliczenia", options)
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.log(error));
+        });
+    </script>
+</body>
+</html>
