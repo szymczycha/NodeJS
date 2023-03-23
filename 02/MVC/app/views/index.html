@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hi</title>
+</head>
+<body>
+    <select name="animal" id="animal">
+        <option value="kot">kot</option>
+        <option value="pies">pies</option>
+        <option value="krowa">krowa</option>
+    </select>
+    <select name="color" id="color">
+        <option value="white">white</option>
+        <option value="black">black</option>
+        <option value="yellow">yellow</option>
+    </select>
+    <select name="animals" id="list"></select>
+    <button id="addOne">add one</button>
+    <button id="getAll">get all</button>
+    <button id="deleteSelected">delete Selected</button>
+    <button id="updateSelected">update Selected</button>
+    <script defer>
+        function updateAnimals(data){
+            let list = document.getElementById("list");
+            list.innerHTML = "";
+            data.forEach(element => {
+                let option = document.createElement("option");
+                option.value = element.id;
+                option.text = element.id;
+                list.appendChild(option);
+            });
+        }
+        document.getElementById("addOne").onclick = async ()=>{
+            await fetch("/add", 
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        name: document.getElementById("animal").value,
+                        color: document.getElementById("color").value,
+                    })
+                }
+            )   
+                .then(response => response.json())
+                .then(data => {
+                        alert(JSON.stringify(data, null, 2));
+                        updateAnimals(data.arr)
+                    }
+                )
+        }
+        document.getElementById("getAll").onclick = async ()=>{
+            await fetch("/getall", 
+                {
+                    method: "POST",
+                }
+            )   
+                .then(response => response.json())
+                .then(data => {
+                        alert(JSON.stringify(data, null, 2));
+                        updateAnimals(data.all)
+                    }
+                )
+        }
+        document.getElementById("deleteSelected").onclick = async ()=>{
+            console.log("delete")
+            await fetch("/delete", 
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        selectedId: document.getElementById("list").value,
+                    })
+                }
+            )   
+                .then(response => response.json())
+                .then(data => {
+                        alert(JSON.stringify(data, null, 2));
+                        updateAnimals(data.arr)
+                    }
+                )
+        }
+        document.getElementById("updateSelected").onclick = async ()=>{
+            console.log("delete")
+            await fetch("/update", 
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        selectedId: document.getElementById("list").value,
+                    })
+                }
+            )   
+                .then(response => response.json())
+                .then(data => {
+                        alert(JSON.stringify(data, null, 2));
+                        updateAnimals(data.arr)
+                    }
+                )
+        }
+    </script>
+</body>
+</html>
